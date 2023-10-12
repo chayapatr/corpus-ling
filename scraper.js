@@ -97,8 +97,7 @@ const scrapeAuthor = async (page, author) => {
 
       await page.goto(links[i]);
       console.log(`fetch: ${links[i]}`);
-      const rawText = await getPageData(page);
-      const text = rawText;
+      const text = await getPageData(page);
 
       fs.writeFile(`scrape/${author}/${slug}.txt`, text, function (err) {
         if (err) throw err;
