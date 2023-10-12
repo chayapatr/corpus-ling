@@ -1,17 +1,17 @@
 import os
 
-from nltk.tokenize import word_tokenize
-from nltk.probability import FreqDist
-
 from gensim.models.ldamodel import LdaModel
 from gensim.corpora import Dictionary
 
 keywords = ["ที่มา", "ต่างๆ", "สำหรับ", "the", "อวกาศ", "ดาราศาสตร์", "วันที่", "เวลา", "of", 'ต่าง ๆ']
 
 import pythainlp.corpus as tc
-from pythainlp.summarize import extract_keywords
+from pythainlp.tokenize import word_tokenize
+from pythainlp.summarize.keybert import KeyBERT
 
 import re
+
+chunk = lambda l, n: [l[i:i + n] for i in range(0, len(l), n)]  
 
 negation = tc.thai_negations()
 thai_stop = tc.thai_stopwords()
@@ -24,16 +24,25 @@ def condition(x):
             and not x in keywords
         )
 
-text_data = []
+text_data = set()
 files = os.listdir("flatten")
+
+kb = KeyBERT()
 
 for file in files:
     with open(f"flatten/{file}", "r") as f:
         # text = [*(filter(condition, f.read().split("|")))]
-        text = extract_keywords(f.read())
+        tokenized = [*(filter(condition, f.read().split("|")))]
+        print(tokenized)
+        chunked = chunk(tokenized, 200)
         print(f"read {file}")
-        print(text)
-        text_data = [text_data, *text]
+        for x in chunked:
+            joined = " ".join(x)
+            text = kb.extract_keywords(joined)
+            print(text)
+            text_data.update(text)
+
+text_data = [*text_data]
 
 # Create a dictionary of the text data
 dictionary = Dictionary(text_data)
