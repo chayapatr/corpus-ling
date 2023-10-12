@@ -6,8 +6,6 @@ from gensim.corpora import Dictionary
 keywords = ["ที่มา", "ต่างๆ", "สำหรับ", "the", "อวกาศ", "ดาราศาสตร์", "วันที่", "เวลา", "of", 'ต่าง ๆ']
 
 import pythainlp.corpus as tc
-from pythainlp.tokenize import word_tokenize
-from pythainlp.summarize.keybert import KeyBERT
 
 import re
 
@@ -24,25 +22,14 @@ def condition(x):
             and not x in keywords
         )
 
-text_data = set()
+text_data = []
 files = os.listdir("flatten")
-
-kb = KeyBERT()
 
 for file in files:
     with open(f"flatten/{file}", "r") as f:
-        # text = [*(filter(condition, f.read().split("|")))]
-        tokenized = [*(filter(condition, f.read().split("|")))]
-        print(tokenized)
-        chunked = chunk(tokenized, 200)
         print(f"read {file}")
-        for x in chunked:
-            joined = " ".join(x)
-            text = kb.extract_keywords(joined)
-            print(text)
-            text_data.update(text)
-
-text_data = [*text_data]
+        text = [*(filter(condition, f.read().split("|")))]
+        text_data.append(text)
 
 # Create a dictionary of the text data
 dictionary = Dictionary(text_data)
