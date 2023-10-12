@@ -12,6 +12,15 @@ const authors = [
   "chanud",
   "nisa",
   "kanyarat",
+  "ami",
+  "Bunkueanun",
+  "emmy",
+  "mefourth",
+  "onosaka",
+  "pktonycrux",
+  "Prompt",
+  "spacezab",
+  "unko",
 ];
 const baseURL = "https://spaceth.co/author";
 

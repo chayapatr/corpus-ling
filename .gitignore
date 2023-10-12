@@ -2,3 +2,5 @@ scrape
 tokenized
 flatten
 node_modules
+
+.DS_Store
