@@ -1,5 +1,4 @@
 from pythainlp.tokenize import word_tokenize
-import codecs
 import os
 
 def tokenize_string(filename):
